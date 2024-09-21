@@ -11,15 +11,12 @@
 //     status       StatusOfProject @relation(fields: [statusId], references: [id], onDelete: Cascade)
 //   }
 
-import { StatusOfProjectUser } from "./const"
-
-
 export type ProjectCreateData = {
     id: number,
     title: string,
     description: string,
     ownerId: number,
-    status: StatusOfProjectUser,
+    status: string,
     memberCount: number
 }
 
