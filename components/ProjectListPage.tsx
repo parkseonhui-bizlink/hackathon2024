@@ -18,7 +18,7 @@ const projects = [
   { id: 5, title: 'ブロックチェーンウォレット', area: '名古屋', role: 'ブロックチェーン開発者', skills: ['Solidity', 'Web3.js'], username: '山うち', date: '2024-11-01' },
 ]
 
-export function Page() {
+export function Page({ projects }: { projects: any }) {
   const [searchTerm, setSearchTerm] = useState('')
   const [roleFilter, setRoleFilter] = useState('all')
   const router = useRouter()
@@ -76,27 +76,37 @@ export function Page() {
                 <CardTitle className="text-xl font-semibold text-gray-800">{project.title}</CardTitle>
               </CardHeader>
               <CardContent className="flex flex-col gap-2">
-                <p className="text-sm text-gray-600 mb-2">職種: {project.role}</p>
-                <div className="flex flex-wrap gap-2">
-                  {project.skills.map(skill => (
-                    <span key={skill} className="bg-purple-100 text-purple-800 text-xs font-semibold px-2.5 py-0.5 rounded">
-                      {skill}
-                    </span>
-                  ))}
+                <div className="text-sm text-gray-600 mb-2">職種:
+                  <div className="flex flex-wrap gap-2">
+                    {project.categories.map(category => (
+                      <span key={category} className="bg-purple-100 text-purple-800 text-xs font-semibold px-2.5 py-0.5 rounded">
+                        {category}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+                <div className="text-sm text-gray-600 mb-2">スキル:
+                  <div className="flex flex-wrap gap-2">
+                    {project.skills.map(skill => (
+                      <span key={skill} className="bg-purple-100 text-purple-800 text-xs font-semibold px-2.5 py-0.5 rounded">
+                        {skill}
+                      </span>
+                    ))}
+                  </div>
                 </div>
                 <div className="flex flex-row gap-2 items-center">
                   {/* ユーザー名と日付 */}
                   <div className="flex flex-col gap-1 w-[50%]">
                     <div className="flex items-center text-sm text-gray-500">
                       <User className="w-4 h-4 mr-1 text-purple-600" />
-                      {project.username}
+                      {project.owner_name}
                     </div>
                     <div className="flex items-center text-sm text-gray-500">
                       <Calendar className="w-4 h-4 mr-1 text-purple-600" />
-                      {project.date}
+                      {project.createdAt.toLocaleDateString()}
                     </div>
                   </div>
-                  <Button 
+                  <Button
                     className="w-[50%] py-5 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white"
                     onClick={() => router.push(`/project/${project.id}`)}
                   >
