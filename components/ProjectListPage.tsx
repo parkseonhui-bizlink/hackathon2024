@@ -42,7 +42,7 @@ export function Page({ projects }: { projects: any }) {
             <PlusCircle className="mr-2 h-4 w-4" />
             プロジェクト作成
           </Button>
-        </div >
+        </div>
 
         <Card className="mb-6 shadow-md">
           <CardContent className="p-4">
@@ -103,13 +103,12 @@ export function Page({ projects }: { projects: any }) {
                   >
                     詳細を見る
                   </Button>
-                </div >
-              </CardContent >
-            </Card >
-          ))
-          }
-        </div >
-      </div >
-    </div >
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </div>
+    </div>
   )
 }
