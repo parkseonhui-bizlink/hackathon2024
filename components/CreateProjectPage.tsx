@@ -102,11 +102,11 @@ export function Page({
       description,
     });
     const searchParams = new URLSearchParams();
-    // searchParams.set('title', title);
-    // searchParams.set('teamSize', teamSize);
-    // searchParams.set('selectedRoles', JSON.stringify(selectedRoles));
-    // searchParams.set('selectedSkills', JSON.stringify(selectedSkills));
-    // searchParams.set('description', description);
+    searchParams.set('title', title);
+    searchParams.set('teamSize', teamSize);
+    searchParams.set('selectedRoles', JSON.stringify(selectedRoles));
+    searchParams.set('selectedSkills', JSON.stringify(selectedSkills));
+    searchParams.set('description', description);
     router.push(`/createProject?${searchParams.toString()}`);
   };
 
