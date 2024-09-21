@@ -1,3 +1,9 @@
+import { Page } from "@/components/ProjectIdPage";
+
 export default function Project() {
-  return <div>Project/id</div>;
+  return  (
+    <div>
+      <Page />
+    </div>
+  )
 }
