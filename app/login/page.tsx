@@ -2,8 +2,8 @@ import { Page } from '@/components/LoginPage';
 
 export default function Login() {
   return (
-    <div>
+    <main>
       <Page />
-    </div>
+    </main>
   );
 }
