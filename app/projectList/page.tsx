@@ -1,6 +1,8 @@
-import { Page } from "@/components/ProjectListPage";
+import { Page } from '@/components/ProjectListPage';
+import { getAllProjects } from '@/lib/prisma/project/getAll';
 
-export default function ProjectList() {
+export default async function ProjectList() {
+  const projects = await getAllProjects();
   return (
     <div>
       <Page />
