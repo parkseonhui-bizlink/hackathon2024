@@ -48,15 +48,15 @@ model ProjectOwner {
 }
 
 model ProjectUser {
-  id        Int                     @id @default(autoincrement())
+  id        Int                   @id @default(autoincrement())
   projectId Int
   userId    Int
-  project   Project                 @relation(fields: [projectId], references: [id], onDelete: Cascade)
-  user      User                    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  status    StatusOfProjectToUser[]
+  project   Project               @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  user      User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  status    StatusOfProjectUser[]
 }
 
-model StatusOfProjectToUser {
+model StatusOfProjectUser {
   id          Int           @id @default(autoincrement())
   name        String
   projectUser ProjectUser[]
