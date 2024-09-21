@@ -1,24 +1,3 @@
-# Prettier
-
-npx prettier --write .
-
-
-# Prettier VSCode セット
-
-```js
-{
-  "editor.formatOnSave": true,
-  "prettier.requireConfig": true
-}
-```
-
-# env
-
-```js
-DATABASE_URL = "";
-DIRECT_URL = "";
-```
-
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
