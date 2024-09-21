@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -14,56 +14,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { PlusCircle, Search, User, Calendar } from 'lucide-react';
-
-// 仮のプロジェクトデータ
-const projects = [
-  {
-    id: 1,
-    title: 'Webアプリ開発',
-    area: '東京',
-    role: 'フロントエンド',
-    skills: ['React', 'TypeScript'],
-    username: '山田太郎',
-    date: '2024-07-01',
-  },
-  {
-    id: 2,
-    title: 'モバイルアプリデザイン',
-    area: '大阪',
-    role: 'デザイナー',
-    skills: ['UI/UX', 'Figma'],
-    username: '山田花子',
-    date: '2024-08-01',
-  },
-  {
-    id: 3,
-    title: 'ECプラットフォーム',
-    area: '福岡',
-    role: 'バックエンド',
-    skills: ['Node.js', 'MongoDB'],
-    username: '山辺郎',
-    date: '2024-09-01',
-  },
-  {
-    id: 4,
-    title: 'AIチャットボット',
-    area: '札幌',
-    role: '機械学習',
-    skills: ['Python', 'TensorFlow'],
-    username: '小崎',
-    date: '2024-09-01',
-  },
-  {
-    id: 5,
-    title: 'ブロックチェーンウォレット',
-    area: '名古屋',
-    role: 'ブロックチェーン開発者',
-    skills: ['Solidity', 'Web3.js'],
-    username: '山うち',
-    date: '2024-11-01',
-  },
-];
-
+import { Category, Areas, Skills } from '@/types/const';
 export function Page({
   projects,
   allProjectRoles,
@@ -81,17 +32,38 @@ export function Page({
   const [searchTerm, setSearchTerm] = useState('');
   const [roleFilter, setRoleFilter] = useState('all');
   const [areaFilter, setAreaFilter] = useState('all');
+  const [availableRoles, setAvailableRoles] = useState<string[]>([]);
   const router = useRouter();
 
-  const filteredProjects = projects.filter(
-    (project) =>
-      (project.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        project.skills.some((skill) =>
-          skill.toLowerCase().includes(searchTerm.toLowerCase()),
-        )) &&
-      (roleFilter === 'all' || project.role === roleFilter) &&
-      (areaFilter === 'all' || project.area === areaFilter),
-  );
+  useEffect(() => {
+    const availableRoles = allProjectRoles
+      .filter(role =>
+        areaFilter === 'all' ||
+        projects.some(project =>
+          project.id === role.projectId &&
+          project.areas.includes(areaFilter)
+        )
+      )
+      .map(role => role.roleName);
+
+    setAvailableRoles([...new Set(availableRoles)]);
+  }, [areaFilter, projects, allProjectRoles]);
+
+  const filteredProjects = projects.filter(project => {
+    // タイトルまたはスキルでの検索
+    const matchesSearch =
+      project.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      project.skills.some(skill => skill.toLowerCase().includes(searchTerm.toLowerCase()));
+
+    // エリアフィルター
+    const matchesArea = areaFilter === 'all' || project.areas.includes(areaFilter);
+
+    // ロール（カテゴリー）フィルター
+    const projectRoles = allProjectRoles.filter(role => role.projectId === project.id);
+    const matchesRole = roleFilter === 'all' || projectRoles.some(role => role.roleName === roleFilter);
+
+    return matchesSearch && matchesArea && matchesRole;
+  });
 
   return (
     <div className="min-h-screen bg-gray-100 p-6">
@@ -117,11 +89,9 @@ export function Page({
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">すべてのエリア</SelectItem>
-                  <SelectItem value="東京">東京</SelectItem>
-                  <SelectItem value="大阪">大阪</SelectItem>
-                  <SelectItem value="福岡">福岡</SelectItem>
-                  <SelectItem value="札幌">札幌</SelectItem>
-                  <SelectItem value="名古屋">名古屋</SelectItem>
+                  {Object.values(Areas).map(area => (
+                    <SelectItem key={area} value={area}>{area}</SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
 
@@ -132,13 +102,9 @@ export function Page({
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">すべての職種</SelectItem>
-                  <SelectItem value="フロントエンド">フロントエンド</SelectItem>
-                  <SelectItem value="バックエンド">バックエンド</SelectItem>
-                  <SelectItem value="デザイナー">デザイナー</SelectItem>
-                  <SelectItem value="機械学習">機械学習</SelectItem>
-                  <SelectItem value="ブロックチェーン開発者">
-                    ブロックチェーン開発者
-                  </SelectItem>
+                  {Object.values(Category).map(category => (
+                    <SelectItem key={category} value={category}>{category}</SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
               <Input
@@ -147,9 +113,9 @@ export function Page({
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="flex-grow"
               />
-            </div>
-          </CardContent>
-        </Card>
+            </div >
+          </CardContent >
+        </Card >
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredProjects.map((project) => (
@@ -163,6 +129,19 @@ export function Page({
                 </CardTitle>
               </CardHeader>
               <CardContent className="flex flex-col gap-2">
+                <div className="text-sm text-gray-600 mb-2">
+                  エリア:
+                  <div className="flex flex-wrap gap-2">
+                    {project.areas.map((area) => (
+                      <span
+                        key={area}
+                        className="bg-purple-100 text-purple-800 text-xs font-semibold px-2.5 py-0.5 rounded"
+                      >
+                        {area}
+                      </span>
+                    ))}
+                  </div>
+                </div>
                 <div className="text-sm text-gray-600 mb-2">
                   職種:
                   <div className="flex flex-wrap gap-2">
@@ -220,10 +199,11 @@ export function Page({
                   </Button>
                 </div>
               </CardContent>
-            </Card>
-          ))}
-        </div>
-      </div>
-    </div>
+            </Card >
+          ))
+          }
+        </div >
+      </div >
+    </div >
   );
 }
