@@ -50,7 +50,7 @@ export function Page() {
             </form>
             <div className="mt-6 text-center">
               <p className="text-sm text-gray-600">
-                Don't have an account?{' '}
+                Do not have an account?
                 <a href="#" className="text-purple-600 hover:underline">Sign up</a>
               </p> 
               <p className="text-sm text-gray-600">※この機能はありません。</p>
