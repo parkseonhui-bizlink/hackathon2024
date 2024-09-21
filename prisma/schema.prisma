@@ -28,15 +28,8 @@ model Project {
   owner        ProjectOwner[]
   ProjectUser  ProjectUser[]
   ProjectSkill ProjectSkill[]
-  statusId     Int
   memberCount  Int
-  status       StatusOfProject @relation(fields: [statusId], references: [id], onDelete: Cascade)
-}
-
-model StatusOfProject {
-  id       Int       @id @default(autoincrement())
-  name     String
-  projects Project[]
+  status       String
 }
 
 model ProjectOwner {
@@ -53,13 +46,7 @@ model ProjectUser {
   userId    Int
   project   Project               @relation(fields: [projectId], references: [id], onDelete: Cascade)
   user      User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
-  status    StatusOfProjectUser[]
-}
-
-model StatusOfProjectUser {
-  id          Int           @id @default(autoincrement())
-  name        String
-  projectUser ProjectUser[]
+  status    String
 }
 
 model Skill {
