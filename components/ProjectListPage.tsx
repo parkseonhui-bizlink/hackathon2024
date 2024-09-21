@@ -18,7 +18,7 @@ const projects = [
   { id: 5, title: 'ブロックチェーンウォレット', area: '名古屋', role: 'ブロックチェーン開発者', skills: ['Solidity', 'Web3.js'] },
 ]
 
-export function Page() {
+export function Page({ projects }: { projects: any }) {
   const [searchTerm, setSearchTerm] = useState('')
   const [areaFilter, setAreaFilter] = useState('all')
   const [roleFilter, setRoleFilter] = useState('all')
@@ -26,7 +26,7 @@ export function Page() {
 
   const filteredProjects = projects.filter(project =>
     (project.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    project.skills.some(skill => skill.toLowerCase().includes(searchTerm.toLowerCase()))) &&
+      project.Skill.some(skill => skill.toLowerCase().includes(searchTerm.toLowerCase()))) &&
     (areaFilter === 'all' || project.area === areaFilter) &&
     (roleFilter === 'all' || project.role === roleFilter)
   )
@@ -37,7 +37,7 @@ export function Page() {
         <header className="flex justify-between items-center mb-6">
           <h1 className="text-3xl font-bold text-gray-800">プロジェクト一覧</h1>
           {/* buttonをLinkに修正します */}
-          <Button 
+          <Button
             onClick={() => router.push('/createProject')}
             className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white"
           >
@@ -91,22 +91,28 @@ export function Page() {
         </Card>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredProjects.map(project => (
+          {projects.map(project => (
             <Card key={project.id} className="hover:shadow-lg transition-shadow duration-300 bg-white">
               <CardHeader>
                 <CardTitle className="text-xl font-semibold text-gray-800">{project.title}</CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-sm text-gray-600 mb-2">エリア: {project.area}</p>
-                <p className="text-sm text-gray-600 mb-2">職種: {project.role}</p>
-                <div className="flex flex-wrap gap-2">
-                  {project.skills.map(skill => (
+                <p className="text-sm text-gray-600 mb-2">職種:
+                  {project.Category.map(category => (
+                    <span key={category} className="bg-purple-100 text-purple-800 text-xs font-semibold px-2.5 py-0.5 rounded">
+                      {category}
+                    </span>
+                  ))}
+                </p>
+                <p className="text-sm text-gray-600 mb-2">スキル:
+                  {project.Skill.map(skill => (
                     <span key={skill} className="bg-purple-100 text-purple-800 text-xs font-semibold px-2.5 py-0.5 rounded">
                       {skill}
                     </span>
                   ))}
-                </div>
-                <Button 
+                </p>
+                <Button
                   className="mt-4 w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white"
                   onClick={() => router.push(`/project/${project.id}`)}
                 >
