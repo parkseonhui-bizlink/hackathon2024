@@ -1,5 +1,11 @@
-import { redirect } from 'next/navigation'
+import { Page } from '@/components/HomePage';
 
-export default function Home() {
-  redirect('/projectList')
-}
+const Home = () => {
+  return (
+    <main>
+      <Page />
+    </main>
+  );
+};
+
+export default Home;
