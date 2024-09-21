@@ -25,7 +25,7 @@ export function Page() {
 
   const filteredProjects = projects.filter(project =>
     (project.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    project.skills.some(skill => skill.toLowerCase().includes(searchTerm.toLowerCase())))
+      project.skills.some(skill => skill.toLowerCase().includes(searchTerm.toLowerCase())))
     && (roleFilter === 'all' || project.role === roleFilter)
   )
 
@@ -34,7 +34,7 @@ export function Page() {
       <div className="max-w-6xl mx-auto">
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-3xl font-bold text-gray-800">プロジェクト一覧</h1>
-          <Button 
+          <Button
             onClick={() => router.push('/createProject')}
             className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white"
           >
