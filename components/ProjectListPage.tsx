@@ -1,35 +1,97 @@
-'use client'
+'use client';
 
-import Link from 'next/link'
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { PlusCircle, Search, User, Calendar } from 'lucide-react'
+import Link from 'next/link';
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { PlusCircle, Search, User, Calendar } from 'lucide-react';
 
 // 仮のプロジェクトデータ
 const projects = [
-  { id: 1, title: 'Webアプリ開発', area: '東京', role: 'フロントエンド', skills: ['React', 'TypeScript'], username: '山田太郎', date: '2024-07-01' },
-  { id: 2, title: 'モバイルアプリデザイン', area: '大阪', role: 'デザイナー', skills: ['UI/UX', 'Figma'], username: '山田花子', date: '2024-08-01' },
-  { id: 3, title: 'ECプラットフォーム', area: '福岡', role: 'バックエンド', skills: ['Node.js', 'MongoDB'], username: '山辺郎', date: '2024-09-01' },
-  { id: 4, title: 'AIチャットボット', area: '札幌', role: '機械学習', skills: ['Python', 'TensorFlow'], username: '小崎', date: '2024-09-01' },
-  { id: 5, title: 'ブロックチェーンウォレット', area: '名古屋', role: 'ブロックチェーン開発者', skills: ['Solidity', 'Web3.js'], username: '山うち', date: '2024-11-01' },
-]
+  {
+    id: 1,
+    title: 'Webアプリ開発',
+    area: '東京',
+    role: 'フロントエンド',
+    skills: ['React', 'TypeScript'],
+    username: '山田太郎',
+    date: '2024-07-01',
+  },
+  {
+    id: 2,
+    title: 'モバイルアプリデザイン',
+    area: '大阪',
+    role: 'デザイナー',
+    skills: ['UI/UX', 'Figma'],
+    username: '山田花子',
+    date: '2024-08-01',
+  },
+  {
+    id: 3,
+    title: 'ECプラットフォーム',
+    area: '福岡',
+    role: 'バックエンド',
+    skills: ['Node.js', 'MongoDB'],
+    username: '山辺郎',
+    date: '2024-09-01',
+  },
+  {
+    id: 4,
+    title: 'AIチャットボット',
+    area: '札幌',
+    role: '機械学習',
+    skills: ['Python', 'TensorFlow'],
+    username: '小崎',
+    date: '2024-09-01',
+  },
+  {
+    id: 5,
+    title: 'ブロックチェーンウォレット',
+    area: '名古屋',
+    role: 'ブロックチェーン開発者',
+    skills: ['Solidity', 'Web3.js'],
+    username: '山うち',
+    date: '2024-11-01',
+  },
+];
 
-export function Page({ projects }: { projects: any }) {
-  const [searchTerm, setSearchTerm] = useState('')
-  const [roleFilter, setRoleFilter] = useState('all')
-  const [areaFilter, setAreaFilter] = useState('all')
-  const router = useRouter()
+export function Page({
+  projects,
+  allProjectRoles,
+}: {
+  projects: any;
+  allProjectRoles: any;
+}) {
+  const projectIdRolesMap = {};
+  allProjectRoles.forEach((projectRole) => {
+    if (!projectIdRolesMap[projectRole.projectId]) {
+      projectIdRolesMap[projectRole.projectId] = [];
+    }
+    projectIdRolesMap[projectRole.projectId].push(projectRole);
+  });
+  const [searchTerm, setSearchTerm] = useState('');
+  const [roleFilter, setRoleFilter] = useState('all');
+  const [areaFilter, setAreaFilter] = useState('all');
+  const router = useRouter();
 
-  const filteredProjects = projects.filter(project =>
-    (project.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      project.skills.some(skill => skill.toLowerCase().includes(searchTerm.toLowerCase())))
-    && (roleFilter === 'all' || project.role === roleFilter)
-    && (areaFilter === 'all' || project.area === areaFilter)
-  )
+  const filteredProjects = projects.filter(
+    (project) =>
+      (project.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        project.skills.some((skill) =>
+          skill.toLowerCase().includes(searchTerm.toLowerCase()),
+        )) &&
+      (roleFilter === 'all' || project.role === roleFilter) &&
+      (areaFilter === 'all' || project.area === areaFilter),
+  );
 
   return (
     <div className="min-h-screen bg-gray-100 p-6">
@@ -74,7 +136,9 @@ export function Page({ projects }: { projects: any }) {
                   <SelectItem value="バックエンド">バックエンド</SelectItem>
                   <SelectItem value="デザイナー">デザイナー</SelectItem>
                   <SelectItem value="機械学習">機械学習</SelectItem>
-                  <SelectItem value="ブロックチェーン開発者">ブロックチェーン開発者</SelectItem>
+                  <SelectItem value="ブロックチェーン開発者">
+                    ブロックチェーン開発者
+                  </SelectItem>
                 </SelectContent>
               </Select>
               <Input
@@ -88,28 +152,52 @@ export function Page({ projects }: { projects: any }) {
         </Card>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredProjects.map(project => (
-            <Card key={project.id} className="hover:shadow-lg transition-shadow duration-300 bg-white">
+          {filteredProjects.map((project) => (
+            <Card
+              key={project.id}
+              className="hover:shadow-lg transition-shadow duration-300 bg-white"
+            >
               <CardHeader>
-                <CardTitle className="text-xl font-semibold text-gray-800">{project.title}</CardTitle>
+                <CardTitle className="text-xl font-semibold text-gray-800">
+                  {project.title}
+                </CardTitle>
               </CardHeader>
               <CardContent className="flex flex-col gap-2">
-                <div className="text-sm text-gray-600 mb-2">職種:
+                <div className="text-sm text-gray-600 mb-2">
+                  職種:
                   <div className="flex flex-wrap gap-2">
-                    {project.categories.map(category => (
-                      <span key={category} className="bg-purple-100 text-purple-800 text-xs font-semibold px-2.5 py-0.5 rounded">
-                        {category}
+                    {projectIdRolesMap[project.id]?.map((category, index) => (
+                      <span
+                        key={`${category.roleName}_${index}`}
+                        className="bg-purple-100 text-purple-800 text-xs font-semibold px-2.5 py-0.5 rounded"
+                      >
+                        {category.roleName}
                       </span>
                     ))}
                   </div>
                 </div>
-                <div className="text-sm text-gray-600 mb-2">スキル:
+                <div className="text-sm text-gray-600 mb-2">
+                  スキル:
                   <div className="flex flex-wrap gap-2">
-                    {project.skills.map(skill => (
-                      <span key={skill} className="bg-purple-100 text-purple-800 text-xs font-semibold px-2.5 py-0.5 rounded">
+                    {project.skills.map((skill) => (
+                      <span
+                        key={skill}
+                        className="bg-purple-100 text-purple-800 text-xs font-semibold px-2.5 py-0.5 rounded"
+                      >
                         {skill}
                       </span>
                     ))}
+                  </div>
+                </div>
+                <div className="text-sm text-gray-600 mb-2">
+                  <div className="flex flex-wrap gap-2">
+                    募集人数:{' '}
+                    {projectIdRolesMap[project.id]?.reduce(
+                      (prev, cur, index) => {
+                        return index == 0 ? cur.total : prev + cur.total;
+                      },
+                      0,
+                    )}
                   </div>
                 </div>
                 <div className="flex flex-row gap-2 items-center">
@@ -137,5 +225,5 @@ export function Page({ projects }: { projects: any }) {
         </div>
       </div>
     </div>
-  )
+  );
 }
