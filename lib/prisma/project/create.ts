@@ -10,8 +10,8 @@ export async function createProject(data: ProjectCreateData) {
       memberCount: data.memberCount,
       ownerId: data.ownerId,
       status: ProjectStatus[data.status],
-      Category: data.categories,
-      Skill: data.skills,
+      categories: data.categories,
+      skills: data.skills,
     },
   });
   await prisma.projectOwner.create({
