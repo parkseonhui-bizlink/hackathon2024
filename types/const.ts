@@ -38,7 +38,7 @@ export enum Skills {
   Illustrator = "Illustrator"
 }
 
-const Category = {
+export const Category = {
   Frontend: "フロントエンド",
   Backend: "バックエンド",
   Design: "デザイン",
