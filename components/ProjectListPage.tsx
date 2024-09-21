@@ -8,7 +8,6 @@ import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { PlusCircle, Search, User, Calendar } from 'lucide-react'
-import { Category } from '@/types/const'
 
 // 仮のプロジェクトデータ
 const projects = [
@@ -19,7 +18,7 @@ const projects = [
   { id: 5, title: 'ブロックチェーンウォレット', area: '名古屋', role: 'ブロックチェーン開発者', skills: ['Solidity', 'Web3.js'], username: '山うち', date: '2024-11-01' },
 ]
 
-export function Page({ projects }: { projects: any }) {
+export function Page() {
   const [searchTerm, setSearchTerm] = useState('')
   const [roleFilter, setRoleFilter] = useState('all')
   const router = useRouter()
@@ -71,7 +70,7 @@ export function Page({ projects }: { projects: any }) {
         </Card>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {projects.map(project => (
+          {filteredProjects.map(project => (
             <Card key={project.id} className="hover:shadow-lg transition-shadow duration-300 bg-white">
               <CardHeader>
                 <CardTitle className="text-xl font-semibold text-gray-800">{project.title}</CardTitle>
