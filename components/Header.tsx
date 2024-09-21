@@ -84,7 +84,7 @@ export function HeaderComponent() {
         </div>
       </div>
       <Dialog open={showLoginModal} onOpenChange={setShowLoginModal}>
-        <DialogContent className="sm:max-w-[425px]">
+        <DialogContent className="sm:max-w-[425px] bg-white">
           <Card className="border-none shadow-none">
             <CardHeader className="space-y-1">
               <CardTitle className="text-3xl font-bold tracking-tight text-center">
