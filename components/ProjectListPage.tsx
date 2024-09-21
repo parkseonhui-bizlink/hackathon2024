@@ -21,12 +21,14 @@ const projects = [
 export function Page() {
   const [searchTerm, setSearchTerm] = useState('')
   const [roleFilter, setRoleFilter] = useState('all')
+  const [areaFilter, setAreaFilter] = useState('all')
   const router = useRouter()
 
   const filteredProjects = projects.filter(project =>
     (project.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
     project.skills.some(skill => skill.toLowerCase().includes(searchTerm.toLowerCase())))
     && (roleFilter === 'all' || project.role === roleFilter)
+    && (areaFilter === 'all' || project.area === areaFilter)
   )
 
   return (
@@ -46,6 +48,22 @@ export function Page() {
         <Card className="mb-6 shadow-md">
           <CardContent className="p-4">
             <div className="flex flex-row gap-4">
+              {/* エリア検索 */}
+              <Select value={areaFilter} onValueChange={setAreaFilter}>
+                <SelectTrigger className="w-[180px]">
+                  <SelectValue placeholder="エリアで絞り込み" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">すべてのエリア</SelectItem>
+                  <SelectItem value="東京">東京</SelectItem>
+                  <SelectItem value="大阪">大阪</SelectItem>
+                  <SelectItem value="福岡">福岡</SelectItem>
+                  <SelectItem value="札幌">札幌</SelectItem>
+                  <SelectItem value="名古屋">名古屋</SelectItem>
+                </SelectContent>
+              </Select>
+
+              {/* 職種検索 */}
               <Select value={roleFilter} onValueChange={setRoleFilter}>
                 <SelectTrigger className="w-[180px]">
                   <SelectValue placeholder="職種で絞り込み" />
