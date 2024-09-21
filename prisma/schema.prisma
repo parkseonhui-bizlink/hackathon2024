@@ -13,7 +13,66 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Test {
-  id String @id @default(cuid())
-  text String
+model User {
+  id           Int            @id @default(autoincrement())
+  name         String
+  ProjectUser  ProjectUser[]
+  ProjectOwner ProjectOwner[]
+}
+
+model Project {
+  id           Int             @id @default(autoincrement())
+  title        String
+  description  String
+  ownerId      Int
+  owner        ProjectOwner[]
+  ProjectUser  ProjectUser[]
+  ProjectSkill ProjectSkill[]
+  statusId     Int
+  memberCount  Int
+  status       StatusOfProject @relation(fields: [statusId], references: [id], onDelete: Cascade)
+}
+
+model StatusOfProject {
+  id       Int       @id @default(autoincrement())
+  name     String
+  projects Project[]
+}
+
+model ProjectOwner {
+  id        Int     @id @default(autoincrement())
+  projectId Int
+  userId    Int
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model ProjectUser {
+  id        Int                   @id @default(autoincrement())
+  projectId Int
+  userId    Int
+  project   Project               @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  user      User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  status    StatusOfProjectUser[]
+}
+
+model StatusOfProjectUser {
+  id          Int           @id @default(autoincrement())
+  name        String
+  projectUser ProjectUser[]
+}
+
+model Skill {
+  id           Int            @id @default(autoincrement())
+  name         String
+  category     String
+  ProjectSkill ProjectSkill[]
+}
+
+model ProjectSkill {
+  id        Int     @id @default(autoincrement())
+  projectId Int
+  skillId   Int
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  skill     Skill   @relation(fields: [skillId], references: [id], onDelete: Cascade)
 }
