@@ -26,7 +26,7 @@ export function Page({ projects }: { projects: any }) {
 
   const filteredProjects = projects.filter(project =>
     (project.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      project.Skill.some(skill => skill.toLowerCase().includes(searchTerm.toLowerCase())))
+      project.skills.some(skill => skill.toLowerCase().includes(searchTerm.toLowerCase())))
     && (roleFilter === 'all' || project.role === roleFilter)
   )
 
@@ -35,7 +35,6 @@ export function Page({ projects }: { projects: any }) {
       <div className="max-w-6xl mx-auto">
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-3xl font-bold text-gray-800">プロジェクト一覧</h1>
-          {/* buttonをLinkに修正します */}
           <Button
             onClick={() => router.push('/createProject')}
             className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white"
@@ -43,7 +42,7 @@ export function Page({ projects }: { projects: any }) {
             <PlusCircle className="mr-2 h-4 w-4" />
             プロジェクト作成
           </Button>
-        </div>
+        </div >
 
         <Card className="mb-6 shadow-md">
           <CardContent className="p-4">
@@ -78,13 +77,7 @@ export function Page({ projects }: { projects: any }) {
                 <CardTitle className="text-xl font-semibold text-gray-800">{project.title}</CardTitle>
               </CardHeader>
               <CardContent className="flex flex-col gap-2">
-                <p className="text-sm text-gray-600 mb-2">職種:
-                  {project.categories.map(category => (
-                    <span key={category} className="bg-purple-100 text-purple-800 text-xs font-semibold px-2.5 py-0.5 rounded">
-                      {category}
-                    </span>
-                  ))}
-                </p>
+                <p className="text-sm text-gray-600 mb-2">職種: {project.role}</p>
                 <div className="flex flex-wrap gap-2">
                   {project.skills.map(skill => (
                     <span key={skill} className="bg-purple-100 text-purple-800 text-xs font-semibold px-2.5 py-0.5 rounded">
@@ -110,12 +103,13 @@ export function Page({ projects }: { projects: any }) {
                   >
                     詳細を見る
                   </Button>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      </div>
-    </div>
+                </div >
+              </CardContent >
+            </Card >
+          ))
+          }
+        </div >
+      </div >
+    </div >
   )
 }
