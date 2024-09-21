@@ -12,3 +12,37 @@ export enum ProjectUserStatus {
   終了 = "終了",
   特になし = "特になし"
 }
+
+export enum Skills {
+  React = "React",
+  Next = "Next",
+  TypeScript = "TypeScript",
+  JavaScript = "JavaScript",
+  Node = "Node",
+  Express = "Express",
+  MongoDB = "MongoDB",
+  Vue = "Vue",
+  Angular = "Angular",
+  Python = "Python",
+  Java = "Java",
+  CSharp = "C#",
+  PHP = "PHP",
+  Ruby = "Ruby",
+  Go = "Go",
+  Swift = "Swift",
+  Kotlin = "Kotlin",
+  Figma = "Figma",
+  Sketch = "Sketch",
+  AdobeXD = "Adobe XD",
+  Photoshop = "Photoshop",
+  Illustrator = "Illustrator"
+}
+
+const Category = {
+  Frontend: "フロントエンド",
+  Backend: "バックエンド",
+  Design: "デザイン",
+  Marketing: "マーケティング",
+  DataAnalysis: "データ分析",
+  Other: "その他"
+}
