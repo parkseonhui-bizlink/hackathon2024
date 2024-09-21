@@ -1,22 +1,27 @@
 import { Page } from '@/components/CreateProjectPage';
 import { ProjectCreateData } from '@/lib/prisma/project';
+import { createProject } from '@/lib/prisma/project/create';
 import { ProjectStatus } from '@/types/const';
 import { cookies } from 'next/headers';
 
-export default function CreateProject({
+export default async function CreateProject({
   searchParams,
 }: {
   searchParams?: {
-    title: string;
-    teamSize: string;
-    selectedRoles: string[];
-    selectedSkills: string[];
-    description: string;
+    title?: string;
+    teamSize?: string;
+    selectedRoles?: string;
+    selectedSkills?: string;
+    description?: string;
   };
 }) {
   const cookieStore = cookies();
   const userId = cookieStore.get('userId')?.value || '';
-  if (searchParams) {
+  let projectCreated: boolean | undefined = undefined;
+  if (
+    searchParams &&
+    Object.keys(searchParams).some((key) => searchParams[key])
+  ) {
     // createProject
     // export type ProjectCreateData = {
     //   title: string;
@@ -27,19 +32,31 @@ export default function CreateProject({
     //   skills: string[];
     //   memberCount: number;
     // };
-    const projectCreateData: ProjectCreateData = {
-      title: searchParams.title,
-      memberCount: parseInt(searchParams.teamSize),
-      categories: searchParams.selectedRoles,
-      skills: searchParams.selectedSkills,
-      description: searchParams.description,
-      ownerId: parseInt(userId),
-      status: ProjectStatus.募集,
-    };
+    try {
+      const projectCreateData: ProjectCreateData = {
+        title: searchParams.title,
+        memberCount: parseInt(searchParams.teamSize),
+        categories: JSON.parse(searchParams.selectedRoles),
+        skills: JSON.parse(searchParams.selectedSkills),
+        description: searchParams.description,
+        ownerId: parseInt(userId),
+        status: ProjectStatus.募集,
+      };
+      const project = await createProject(projectCreateData);
+      console.log('project created: ' + project);
+      if (project) {
+        projectCreated = true;
+      } else {
+        projectCreated = false;
+      }
+    } catch (error) {
+      console.log('project creation failed with error: ' + error);
+      projectCreated = false;
+    }
   }
   return (
     <div>
-      <Page />
+      <Page projectCreated={projectCreated} />
     </div>
   );
 }

@@ -1,7 +1,7 @@
 'use client';
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -45,7 +45,11 @@ const skills = [
   'Illustrator',
 ];
 
-export function Page() {
+export function Page({
+  projectCreated,
+}: {
+  projectCreated: boolean | undefined;
+}) {
   const [title, setTitle] = useState('');
   const [teamSize, setTeamSize] = useState('');
   const [selectedRoles, setSelectedRoles] = useState<string[]>([]);
@@ -62,9 +66,28 @@ export function Page() {
       selectedSkills,
       description,
     });
-
-    router.push('/projectList');
+    const searchParams = new URLSearchParams();
+    searchParams.set('title', title);
+    searchParams.set('teamSize', teamSize);
+    searchParams.set('selectedRoles', JSON.stringify(selectedRoles));
+    searchParams.set('selectedSkills', JSON.stringify(selectedSkills));
+    searchParams.set('description', description);
+    router.push(`/createProject?${searchParams.toString()}`);
   };
+
+  useEffect(() => {
+    const sleep = async () => {
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+    };
+
+    if (projectCreated === false) {
+      alert('プロジェクトの作成に失敗しました');
+    } else if (projectCreated === true) {
+      alert('プロジェクトの作成に成功しました');
+      sleep();
+      router.push('/projectList');
+    }
+  }, [projectCreated, router]);
 
   return (
     <div className="min-h-screen bg-gray-100 p-6">
