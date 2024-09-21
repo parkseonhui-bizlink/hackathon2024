@@ -1,17 +1,24 @@
-// import { PrismaClient } from '@prisma/client'
+import { ProjectStatus } from '@/types/const';
+import { prisma } from '../prisma';
+import { ProjectCreateData } from '../project';
 
-// const prisma = new PrismaClient();
-
-// export type Project = {
-//   title: string
-//   description: string
-//   ownerId: number
-//   statusId: number
-// }
-
-// export const createProject = async (data: Project) => {
-//   const project = await prisma.project.create({
-//     data,
-//   })
-//   return project
-// }
+export async function createProject(data: ProjectCreateData) {
+  const createdProject = await prisma.project.create({
+    data: {
+      title: data.title,
+      description: data.description,
+      memberCount: data.memberCount,
+      ownerId: data.ownerId,
+      status: ProjectStatus[data.status],
+      Category: data.categories,
+      Skill: data.skills,
+    },
+  });
+  await prisma.projectOwner.create({
+    data: {
+      userId: data.ownerId,
+      projectId: createdProject.id,
+    },
+  });
+  return createdProject.id;
+}
