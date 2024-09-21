@@ -35,7 +35,6 @@ export default async function CreateProject({
     try {
       const projectCreateData: ProjectCreateData = {
         title: searchParams.title,
-        memberCount: parseInt(searchParams.teamSize),
         categories: JSON.parse(searchParams.selectedRoles),
         skills: JSON.parse(searchParams.selectedSkills),
         description: searchParams.description,

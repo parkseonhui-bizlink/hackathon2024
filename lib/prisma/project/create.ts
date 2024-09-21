@@ -3,14 +3,13 @@ import { prisma } from '../prisma';
 import { ProjectCreateData } from '../project';
 
 export async function createProject(data: ProjectCreateData) {
+  // transaction should be implemented here
   const createdProject = await prisma.project.create({
     data: {
       title: data.title,
       description: data.description,
-      memberCount: data.memberCount,
       ownerId: data.ownerId,
       status: ProjectStatus[data.status],
-      categories: data.categories,
       skills: data.skills,
     },
   });
@@ -20,5 +19,18 @@ export async function createProject(data: ProjectCreateData) {
       projectId: createdProject.id,
     },
   });
+  await Promise.all(
+    data.categories.map((category) => {
+      return prisma.projectRole.create({
+        data: {
+          projectId: createdProject.id,
+          current: 0,
+          roleName: category.role,
+          total: parseInt(category.count),
+        },
+      });
+    }),
+  );
+
   return createdProject.id;
 }

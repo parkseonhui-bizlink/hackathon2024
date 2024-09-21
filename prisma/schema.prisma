@@ -11,7 +11,6 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
 }
 
 model User {
@@ -22,19 +21,18 @@ model User {
 }
 
 model Project {
-  id           Int             @id @default(autoincrement())
-  title        String
-  description  String
-  ownerId      Int
-  owner        ProjectOwner[]
-  ProjectUser  ProjectUser[]
-  skills        String[]
-  categories     String[]
-  areas         String[]
-  memberCount  Int
-  status       String
-  createdAt    DateTime      @default(now())
-  updatedAt    DateTime      @updatedAt
+  id          Int            @id @default(autoincrement())
+  title       String
+  description String
+  ownerId     Int
+  owner       ProjectOwner[]
+  ProjectUser ProjectUser[]
+  skills      String[]
+  areas       String[]
+  status      String
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+  ProjectRole ProjectRole[]
 }
 
 model ProjectOwner {
@@ -46,10 +44,21 @@ model ProjectOwner {
 }
 
 model ProjectUser {
-  id        Int                   @id @default(autoincrement())
+  id        Int     @id @default(autoincrement())
   projectId Int
   userId    Int
-  project   Project               @relation(fields: [projectId], references: [id], onDelete: Cascade)
-  user      User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
   status    String
+}
+
+model ProjectRole {
+  id        Int     @id @default(autoincrement())
+  projectId Int
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  roleName  String
+  current   Int
+  total     Int
+
+  @@unique([projectId, roleName])
 }
