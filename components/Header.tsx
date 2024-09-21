@@ -53,7 +53,7 @@ export function HeaderComponent() {
               <Link href="/projectList" className="text-gray-500 hover:text-gray-900">
                 Project
               </Link>
-              <Link href="/users" className="text-gray-500 hover:text-gray-900">
+              <Link href="/otbUsers" className="text-gray-500 hover:text-gray-900">
                 OTB User
               </Link>
             </nav>
