@@ -5,7 +5,7 @@ export default async function ProjectList() {
   const projects = await getAllProjects();
   return (
     <div>
-      <Page projects={projects} />
+      <Page />
     </div>
   );
 }
