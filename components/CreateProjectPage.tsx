@@ -112,7 +112,7 @@ export function Page() {
                 <DialogTrigger asChild>
                   <Button variant="outline">プレビュー</Button>
                 </DialogTrigger>
-                <DialogContent className="sm:max-w-[625px]">
+                <DialogContent className="sm:max-w-[625px] bg-white">
                   <DialogHeader>
                     <DialogTitle>プロジェクト概要プレビュー</DialogTitle>
                   </DialogHeader>
