@@ -16,21 +16,27 @@ datasource db {
 model User {
   id           Int            @id @default(autoincrement())
   name         String
-  projects     Project[]
   ProjectUser  ProjectUser[]
   ProjectOwner ProjectOwner[]
 }
 
 model Project {
-  id           Int            @id @default(autoincrement())
+  id           Int             @id @default(autoincrement())
   title        String
   description  String
   ownerId      Int
   owner        ProjectOwner[]
-  user         User[]
-  skills       Skill[]
   ProjectUser  ProjectUser[]
   ProjectSkill ProjectSkill[]
+  statusId     Int
+  memberCount  Int
+  status       StatusOfProject @relation(fields: [statusId], references: [id], onDelete: Cascade)
+}
+
+model StatusOfProject {
+  id       Int       @id @default(autoincrement())
+  name     String
+  projects Project[]
 }
 
 model ProjectOwner {
@@ -42,18 +48,24 @@ model ProjectOwner {
 }
 
 model ProjectUser {
-  id        Int     @id @default(autoincrement())
+  id        Int                     @id @default(autoincrement())
   projectId Int
   userId    Int
-  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
-  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  project   Project                 @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  user      User                    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  status    StatusOfProjectToUser[]
+}
+
+model StatusOfProjectToUser {
+  id          Int           @id @default(autoincrement())
+  name        String
+  projectUser ProjectUser[]
 }
 
 model Skill {
   id           Int            @id @default(autoincrement())
   name         String
   category     String
-  projects     Project[]
   ProjectSkill ProjectSkill[]
 }
 
