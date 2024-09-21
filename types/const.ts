@@ -38,11 +38,20 @@ export enum Skills {
   Illustrator = "Illustrator"
 }
 
-const Category = {
+export const Category = {
   Frontend: "フロントエンド",
   Backend: "バックエンド",
   Design: "デザイン",
   Marketing: "マーケティング",
   DataAnalysis: "データ分析",
+  Other: "その他"
+}
+
+export const Areas = {
+  Tokyo: "東京",
+  Osaka: "大阪",
+  Nagoya: "名古屋",
+  Fukuoka: "福岡",
+  Sapporo: "札幌",
   Other: "その他"
 }
