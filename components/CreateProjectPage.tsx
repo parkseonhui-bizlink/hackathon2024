@@ -1,25 +1,57 @@
-'use client'
+'use client';
 
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Label } from "@/components/ui/label"
-import { Checkbox } from "@/components/ui/checkbox"
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Label } from '@/components/ui/label';
+import { Checkbox } from '@/components/ui/checkbox';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
 
-const roles = ['企画', 'デザイナー', 'フロントエンド', 'バックエンド', 'その他']
-const skills = ['JavaScript', 'TypeScript', 'React', 'Vue.js', 'Angular', 'Node.js', 'Python', 'Java', 'C#', 'PHP', 'Ruby', 'Go', 'Swift', 'Kotlin', 'Figma', 'Sketch', 'Adobe XD', 'Photoshop', 'Illustrator']
+const roles = [
+  '企画',
+  'デザイナー',
+  'フロントエンド',
+  'バックエンド',
+  'その他',
+];
+const skills = [
+  'JavaScript',
+  'TypeScript',
+  'React',
+  'Vue.js',
+  'Angular',
+  'Node.js',
+  'Python',
+  'Java',
+  'C#',
+  'PHP',
+  'Ruby',
+  'Go',
+  'Swift',
+  'Kotlin',
+  'Figma',
+  'Sketch',
+  'Adobe XD',
+  'Photoshop',
+  'Illustrator',
+];
 
 export function Page() {
-  const [title, setTitle] = useState('')
-  const [teamSize, setTeamSize] = useState('')
-  const [selectedRoles, setSelectedRoles] = useState<string[]>([])
-  const [selectedSkills, setSelectedSkills] = useState<string[]>([])
-  const [description, setDescription] = useState('')
-  const router = useRouter()
+  const [title, setTitle] = useState('');
+  const [teamSize, setTeamSize] = useState('');
+  const [selectedRoles, setSelectedRoles] = useState<string[]>([]);
+  const [selectedSkills, setSelectedSkills] = useState<string[]>([]);
+  const [description, setDescription] = useState('');
+  const router = useRouter();
 
   const handleSubmit = () => {
     // ここでプロジェクトの作成処理を行う
@@ -28,27 +60,41 @@ export function Page() {
       teamSize,
       selectedRoles,
       selectedSkills,
-      description
-    })
-    router.push('/projectList')
-  }
+      description,
+    });
+
+    router.push('/projectList');
+  };
 
   return (
     <div className="min-h-screen bg-gray-100 p-6">
       <div className="max-w-3xl mx-auto">
         <Card className="shadow-md">
           <CardHeader>
-            <CardTitle className="text-2xl font-bold text-center text-gray-800">プロジェクト作成</CardTitle>
+            <CardTitle className="text-2xl font-bold text-center text-gray-800">
+              プロジェクト作成
+            </CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
             <div>
               <Label htmlFor="title">プロジェクトタイトル</Label>
-              <Input id="title" value={title} onChange={(e) => setTitle(e.target.value)} className="mt-1" />
+              <Input
+                id="title"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                className="mt-1"
+              />
             </div>
 
             <div>
               <Label htmlFor="teamSize">人員数</Label>
-              <Input id="teamSize" type="number" value={teamSize} onChange={(e) => setTeamSize(e.target.value)} className="mt-1" />
+              <Input
+                id="teamSize"
+                type="number"
+                value={teamSize}
+                onChange={(e) => setTeamSize(e.target.value)}
+                className="mt-1"
+              />
             </div>
 
             <div>
@@ -61,9 +107,11 @@ export function Page() {
                       checked={selectedRoles.includes(role)}
                       onCheckedChange={(checked) => {
                         if (checked) {
-                          setSelectedRoles([...selectedRoles, role])
+                          setSelectedRoles([...selectedRoles, role]);
                         } else {
-                          setSelectedRoles(selectedRoles.filter((r) => r !== role))
+                          setSelectedRoles(
+                            selectedRoles.filter((r) => r !== role),
+                          );
                         }
                       }}
                     />
@@ -83,9 +131,11 @@ export function Page() {
                       checked={selectedSkills.includes(skill)}
                       onCheckedChange={(checked) => {
                         if (checked) {
-                          setSelectedSkills([...selectedSkills, skill])
+                          setSelectedSkills([...selectedSkills, skill]);
                         } else {
-                          setSelectedSkills(selectedSkills.filter((s) => s !== skill))
+                          setSelectedSkills(
+                            selectedSkills.filter((s) => s !== skill),
+                          );
                         }
                       }}
                     />
@@ -117,18 +167,22 @@ export function Page() {
                     <DialogTitle>プロジェクト概要プレビュー</DialogTitle>
                   </DialogHeader>
                   <div className="mt-4">
-                    <h3 className="text-lg font-semibold">{title || 'プロジェクトタイトル'}</h3>
+                    <h3 className="text-lg font-semibold">
+                      {title || 'プロジェクトタイトル'}
+                    </h3>
                     <p>人員数: {teamSize || '未設定'}</p>
                     <p>募集職種: {selectedRoles.join(', ') || '未設定'}</p>
                     <p>募集技術: {selectedSkills.join(', ') || '未設定'}</p>
                     <div className="mt-2">
                       <h4 className="font-semibold">プロジェクト詳細:</h4>
-                      <p className="whitespace-pre-wrap">{description || '未入力'}</p>
+                      <p className="whitespace-pre-wrap">
+                        {description || '未入力'}
+                      </p>
                     </div>
                   </div>
                 </DialogContent>
               </Dialog>
-              <Button 
+              <Button
                 onClick={handleSubmit}
                 className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white"
               >
@@ -139,5 +193,5 @@ export function Page() {
         </Card>
       </div>
     </div>
-  )
+  );
 }
