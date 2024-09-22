@@ -11,7 +11,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import { Project } from '@prisma/client';
+import { Project, ProjectRole } from '@prisma/client';
 
 // 仮のプロジェクトデータ
 // const project = {
@@ -31,10 +31,18 @@ import { Project } from '@prisma/client';
 export function Page({
   projectRoles,
   projectFromDB,
+  userInProjectRole,
 }: {
-  projectRoles: any;
+  projectRoles: ProjectRole[];
   projectFromDB: Project;
+  userInProjectRole: {
+    userId: number;
+    role: string;
+    projectId: number;
+  }[];
 }) {
+  console.log(JSON.stringify(userInProjectRole, null, 4));
+
   const roles = projectRoles.map((role) => ({
     name: role.roleName,
     current: role.current,
@@ -66,7 +74,9 @@ export function Page({
 
   const confirmApply = () => {
     const role = roles.find((role) => role.name == openRole);
-    const currentCount = role?.current ?? -1;
+    const currentCount = roleCounts.find(
+      (role) => role.roleName == openRole,
+    ).count;
     if (currentCount >= 0 && currentCount + 1 <= role.total) {
       fetch(`/api/projectRole/increase`, {
         method: 'POST',
@@ -102,16 +112,20 @@ export function Page({
     }
   };
 
-  const handleCancel = () => {
-    const role = roles.find((role) => role.name == openRole);
-    const currentCount = role?.current ?? -1;
+  const handleCancel = (roleName) => {
+    const role = roles.find((role) => role.name == roleName);
+    const currentCount = roleCounts.find(
+      (role) => role.roleName == roleName,
+    ).count;
+    console.log('currentCount: ' + currentCount);
     if (currentCount >= 0 && currentCount - 1 >= 0) {
+      console.log('here: ' + currentCount);
       fetch(`/api/projectRole/decrease`, {
         method: 'POST',
         body: JSON.stringify({
           projectId: project.id,
-          roleName: openRole,
-          currentCount: roles.find((role) => role.name == openRole).current,
+          roleName: roleName,
+          currentCount: currentCount,
         }),
       })
         .then((response) => {
@@ -190,7 +204,7 @@ export function Page({
                   </div>
                   {appliedRole === role.name ? (
                     <Button
-                      onClick={handleCancel}
+                      onClick={() => handleCancel(role.name)}
                       className="bg-red-500 hover:bg-red-600 text-white"
                     >
                       キャンセル
