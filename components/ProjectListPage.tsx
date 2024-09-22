@@ -87,13 +87,6 @@ export function Page({
       <div className="max-w-6xl mx-auto">
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-3xl font-bold text-gray-800">プロジェクト一覧</h1>
-          <Button
-            onClick={() => router.push('/createProject')}
-            className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white"
-          >
-            <PlusCircle className="mr-2 h-4 w-4" />
-            プロジェクト作成
-          </Button>
         </div>
 
         <Card className="mb-6 shadow-md">

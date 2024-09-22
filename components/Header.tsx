@@ -96,10 +96,10 @@ export function HeaderComponent() {
               </Button>
               {isLoggedIn ? (
                 <Button
-                  onClick={handleLogout}
+                  onClick={() => router.push('/myPage')}
                   className="bg-gray-200 hover:bg-gray-300 text-gray-800"
                 >
-                  ログアウト
+                  {username}
                 </Button>
               ) : (
                 <Button
