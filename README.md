@@ -40,7 +40,7 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 ```bash
 npx prisma format
 
-npx prisma db push
+npx prisma db pull
 
 npx prisma generate
 ```

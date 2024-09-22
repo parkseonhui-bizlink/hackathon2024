@@ -1,9 +1,12 @@
 import { Page } from "@/components/OTBUserPage"
+import { getAllUser } from "@/lib/prisma/user/query"
 
-export default function OTBUserPage() {
+export default async function OTBUserPage() {
+  const users = await getAllUser();
+  console.log(users);
   return (
     <div>
-      <Page />
+      <Page users={users} />
     </div>
   )
 }
