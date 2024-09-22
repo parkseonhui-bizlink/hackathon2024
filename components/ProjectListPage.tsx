@@ -37,30 +37,39 @@ export function Page({
 
   useEffect(() => {
     const availableRoles = allProjectRoles
-      .filter(role =>
-        areaFilter === 'all' ||
-        projects.some(project =>
-          project.id === role.projectId &&
-          project.areas.includes(areaFilter)
-        )
+      .filter(
+        (role) =>
+          areaFilter === 'all' ||
+          projects.some(
+            (project) =>
+              project.id === role.projectId &&
+              project.areas.includes(areaFilter),
+          ),
       )
-      .map(role => role.roleName);
+      .map((role) => role.roleName);
 
-    setAvailableRoles([...new Set(availableRoles)]);
+    setAvailableRoles([...availableRoles]);
   }, [areaFilter, projects, allProjectRoles]);
 
-  const filteredProjects = projects.filter(project => {
+  const filteredProjects = projects.filter((project) => {
     // タイトルまたはスキルでの検索
     const matchesSearch =
       project.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      project.skills.some(skill => skill.toLowerCase().includes(searchTerm.toLowerCase()));
+      project.skills.some((skill) =>
+        skill.toLowerCase().includes(searchTerm.toLowerCase()),
+      );
 
     // エリアフィルター
-    const matchesArea = areaFilter === 'all' || project.areas.includes(areaFilter);
+    const matchesArea =
+      areaFilter === 'all' || project.areas.includes(areaFilter);
 
     // ロール（カテゴリー）フィルター
-    const projectRoles = allProjectRoles.filter(role => role.projectId === project.id);
-    const matchesRole = roleFilter === 'all' || projectRoles.some(role => role.roleName === roleFilter);
+    const projectRoles = allProjectRoles.filter(
+      (role) => role.projectId === project.id,
+    );
+    const matchesRole =
+      roleFilter === 'all' ||
+      projectRoles.some((role) => role.roleName === roleFilter);
 
     return matchesSearch && matchesArea && matchesRole;
   });
@@ -89,8 +98,10 @@ export function Page({
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">すべてのエリア</SelectItem>
-                  {Object.values(Areas).map(area => (
-                    <SelectItem key={area} value={area}>{area}</SelectItem>
+                  {Object.values(Areas).map((area) => (
+                    <SelectItem key={area} value={area}>
+                      {area}
+                    </SelectItem>
                   ))}
                 </SelectContent>
               </Select>
@@ -102,8 +113,10 @@ export function Page({
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">すべての職種</SelectItem>
-                  {Object.values(Category).map(category => (
-                    <SelectItem key={category} value={category}>{category}</SelectItem>
+                  {Object.values(Category).map((category) => (
+                    <SelectItem key={category} value={category}>
+                      {category}
+                    </SelectItem>
                   ))}
                 </SelectContent>
               </Select>
@@ -113,9 +126,9 @@ export function Page({
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="flex-grow"
               />
-            </div >
-          </CardContent >
-        </Card >
+            </div>
+          </CardContent>
+        </Card>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredProjects.map((project) => (
@@ -199,11 +212,10 @@ export function Page({
                   </Button>
                 </div>
               </CardContent>
-            </Card >
-          ))
-          }
-        </div >
-      </div >
-    </div >
+            </Card>
+          ))}
+        </div>
+      </div>
+    </div>
   );
 }
