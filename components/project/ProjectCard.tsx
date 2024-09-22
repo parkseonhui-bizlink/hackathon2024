@@ -13,13 +13,13 @@ export function ProjectCard({ project }: { project: any }) {
       </CardHeader>
       <CardContent className="flex flex-col gap-2">
         <div className="text-sm text-gray-600 mb-2">職種:
-          <div className="flex flex-wrap gap-2">
+          {/* <div className="flex flex-wrap gap-2">
             {project.categories.map((category: string) => (
               <span key={category} className="bg-purple-100 text-purple-800 text-xs font-semibold px-2.5 py-0.5 rounded">
                 {category}
               </span>
             ))}
-          </div>
+          </div> */}
         </div>
         <div className="text-sm text-gray-600 mb-2">スキル:
           <div className="flex flex-wrap gap-2">
@@ -39,7 +39,7 @@ export function ProjectCard({ project }: { project: any }) {
             </div>
             <div className="flex items-center text-sm text-gray-500">
               <Calendar className="w-4 h-4 mr-1 text-purple-600" />
-              {project.createdAt}
+              {new Date(project.createdAt).toLocaleDateString()}
             </div>
           </div>
           <Button

@@ -1,36 +1,79 @@
-'use client'
+'use client';
 
-import Link from 'next/link'
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
+import Link from 'next/link';
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { ProjectCard } from './project/ProjectCard'
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { PlusCircle, Search, User, Calendar } from 'lucide-react'
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { PlusCircle, Search, User, Calendar } from 'lucide-react';
+import { Category, Areas, Skills } from '@/types/const';
+export function Page({
+  projects,
+  allProjectRoles,
+}: {
+  projects: any;
+  allProjectRoles: any;
+}) {
+  const projectIdRolesMap = {};
+  allProjectRoles.forEach((projectRole) => {
+    if (!projectIdRolesMap[projectRole.projectId]) {
+      projectIdRolesMap[projectRole.projectId] = [];
+    }
+    projectIdRolesMap[projectRole.projectId].push(projectRole);
+  });
+  const [searchTerm, setSearchTerm] = useState('');
+  const [roleFilter, setRoleFilter] = useState('all');
+  const [areaFilter, setAreaFilter] = useState('all');
+  const [availableRoles, setAvailableRoles] = useState<string[]>([]);
+  const router = useRouter();
 
-// 仮のプロジェクトデータ
-const projects = [
-  { id: 1, title: 'Webアプリ開発', area: '東京', role: 'フロントエンド', skills: ['React', 'TypeScript'], username: '山田太郎', date: '2024-07-01' },
-  { id: 2, title: 'モバイルアプリデザイン', area: '大阪', role: 'デザイナー', skills: ['UI/UX', 'Figma'], username: '山田花子', date: '2024-08-01' },
-  { id: 3, title: 'ECプラットフォーム', area: '福岡', role: 'バックエンド', skills: ['Node.js', 'MongoDB'], username: '山辺郎', date: '2024-09-01' },
-  { id: 4, title: 'AIチャットボット', area: '札幌', role: '機械学習', skills: ['Python', 'TensorFlow'], username: '小崎', date: '2024-09-01' },
-  { id: 5, title: 'ブロックチェーンウォレット', area: '名古屋', role: 'ブロックチェーン開発者', skills: ['Solidity', 'Web3.js'], username: '山うち', date: '2024-11-01' },
-]
+  useEffect(() => {
+    const availableRoles = allProjectRoles
+      .filter(
+        (role) =>
+          areaFilter === 'all' ||
+          projects.some(
+            (project) =>
+              project.id === role.projectId &&
+              project.areas.includes(areaFilter),
+          ),
+      )
+      .map((role) => role.roleName);
 
-export function Page({ projects }: { projects: any }) {
-  const [searchTerm, setSearchTerm] = useState('')
-  const [roleFilter, setRoleFilter] = useState('all')
-  const [areaFilter, setAreaFilter] = useState('all')
-  const router = useRouter()
+    setAvailableRoles([...availableRoles]);
+  }, [areaFilter, projects, allProjectRoles]);
 
-  const filteredProjects = projects.filter(project =>
-    (project.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      project.skills.some(skill => skill.toLowerCase().includes(searchTerm.toLowerCase())))
-    && (roleFilter === 'all' || project.role === roleFilter)
-    && (areaFilter === 'all' || project.area === areaFilter)
-  )
+  const filteredProjects = projects.filter((project) => {
+    // タイトルまたはスキルでの検索
+    const matchesSearch =
+      project.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      project.skills.some((skill) =>
+        skill.toLowerCase().includes(searchTerm.toLowerCase()),
+      );
+
+    // エリアフィルター
+    const matchesArea =
+      areaFilter === 'all' || project.areas.includes(areaFilter);
+
+    // ロール（カテゴリー）フィルター
+    const projectRoles = allProjectRoles.filter(
+      (role) => role.projectId === project.id,
+    );
+    const matchesRole =
+      roleFilter === 'all' ||
+      projectRoles.some((role) => role.roleName === roleFilter);
+
+    return matchesSearch && matchesArea && matchesRole;
+  });
 
   return (
     <div className="min-h-screen bg-gray-100 p-6">
@@ -56,11 +99,11 @@ export function Page({ projects }: { projects: any }) {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">すべてのエリア</SelectItem>
-                  <SelectItem value="東京">東京</SelectItem>
-                  <SelectItem value="大阪">大阪</SelectItem>
-                  <SelectItem value="福岡">福岡</SelectItem>
-                  <SelectItem value="札幌">札幌</SelectItem>
-                  <SelectItem value="名古屋">名古屋</SelectItem>
+                  {Object.values(Areas).map((area) => (
+                    <SelectItem key={area} value={area}>
+                      {area}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
 
@@ -71,11 +114,11 @@ export function Page({ projects }: { projects: any }) {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">すべての職種</SelectItem>
-                  <SelectItem value="フロントエンド">フロントエンド</SelectItem>
-                  <SelectItem value="バックエ��ド">バックエンド</SelectItem>
-                  <SelectItem value="デザイナー">デザイナー</SelectItem>
-                  <SelectItem value="機械学習">機械学習</SelectItem>
-                  <SelectItem value="ブロックチェーン開発者">ブロックチェーン開発者</SelectItem>
+                  {Object.values(Category).map((category) => (
+                    <SelectItem key={category} value={category}>
+                      {category}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
               <Input
@@ -95,5 +138,5 @@ export function Page({ projects }: { projects: any }) {
         </div>
       </div>
     </div>
-  )
+  );
 }

@@ -5,7 +5,6 @@ export type ProjectCreateData = {
   description: string;
   ownerId: number;
   status: ProjectStatus;
-  categories: string[];
+  categories: { role: string; count: string }[];
   skills: string[];
-  memberCount: number;
 };
