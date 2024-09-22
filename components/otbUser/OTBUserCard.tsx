@@ -7,12 +7,11 @@ import { useRouter } from 'next/navigation'
 
 export function OTBUserCard({ user }: { user: any }) {
   const router = useRouter()
-  
+
   return (
-    <Card 
-      className={`hover:shadow-lg transition-shadow duration-300 relative ${
-        user.skills.includes('人材プロ') ? 'border border-[#9333EA]' : ''
-      }`}
+    <Card
+      className={`hover:shadow-lg transition-shadow duration-300 relative ${user.skills.includes('人材プロ') ? 'border border-[#9333EA]' : ''
+        }`}
     >
       <CardContent className="p-4">
         <DropdownMenu>
@@ -43,11 +42,10 @@ export function OTBUserCard({ user }: { user: any }) {
             {user.skills.map((skill: string, index: number) => (
               <span
                 key={index}
-                className={`px-2 py-1 rounded text-xs whitespace-nowrap ${
-                  skill === '人材プロ' || skill === 'フロントエンド'
+                className={`px-2 py-1 rounded text-xs whitespace-nowrap ${skill === '人材プロ' || skill === 'フロントエンド'
                     ? 'bg-purple-100 text-purple-800'
                     : 'bg-gray-200 text-gray-800'
-                }`}
+                  }`}
               >
                 #{skill}
               </span>
