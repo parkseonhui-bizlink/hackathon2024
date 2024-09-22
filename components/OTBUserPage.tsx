@@ -179,7 +179,7 @@ export function Page({ users }: { users: any }) {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {filteredUsers.map((user) => (
-            <OTBUserCard user={user} />
+            <OTBUserCard key={user.id} user={user} />
           ))}
         </div>
 
