@@ -1,4 +1,5 @@
 'use client';
+
 import { useState, useMemo } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -10,7 +11,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import Image from 'next/image';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { MoreVertical } from 'lucide-react';
 import { OTBUserCard } from './otbUser/OTBUserCard';
 import { Category, Areas, Skills } from '@/types/const';
 
@@ -122,7 +130,10 @@ export function Page({ users }: { users: any }) {
           <h1 className="text-3xl font-bold text-gray-800 mb-4">
             チームメンバー募集とキャリア相談も
           </h1>
-          <FeaturedProfessionals />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="bg-gray-200 h-48 rounded-lg"></div>
+            <div className="bg-gray-200 h-48 rounded-lg"></div>
+          </div>
         </header>
 
         <Card className="mb-6 shadow-md">
@@ -178,56 +189,6 @@ export function Page({ users }: { users: any }) {
           </Button>
         </div>
       </div>
-    </div>
-  );
-}
-
-const featuredProfessionals = [
-  {
-    id: 1,
-    name: 'Taro Yamada',
-    role: 'フルスタックエンジニア',
-    description:
-      '10年以上の経験を持つベテランエンジニア。AI、ブロックチェーン、クラウドアーキテクチャに精通。',
-    imageUrl: '/img/pro.png',
-  },
-  {
-    id: 2,
-    name: 'Hanako Sato',
-    role: 'UIUXデザイナー',
-    description:
-      '国際的な賞を受賞したクリエイティブデザイナー。ユーザー中心のデザインアプローチを重視。',
-    imageUrl: '/img/pro.png',
-  },
-];
-
-export default function FeaturedProfessionals() {
-  return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-      {featuredProfessionals.map((professional) => (
-        <Card
-          key={professional.id}
-          className="overflow-hidden border border-purple-600 shadow-lg"
-        >
-          <CardContent className="p-0 flex">
-            <div className="w-1/3 relative">
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-white opacity-70 z-10" />
-              <Image
-                src={professional.imageUrl}
-                alt={professional.name}
-                width={300}
-                height={400}
-                className="object-cover h-full"
-              />
-            </div>
-            <div className="w-2/3 p-6 bg-gradient-to-r from-white via-white to-gray-50">
-              <h3 className="text-xl font-bold mb-2">{professional.name}</h3>
-              <p className="text-sm text-gray-600 mb-3">{professional.role}</p>
-              <p className="text-sm">{professional.description}</p>
-            </div>
-          </CardContent>
-        </Card>
-      ))}
     </div>
   );
 }
