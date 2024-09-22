@@ -11,7 +11,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import { Project, ProjectRole } from '@prisma/client';
+import { Project } from '@prisma/client';
 
 // 仮のプロジェクトデータ
 // const project = {
@@ -32,7 +32,7 @@ export function Page({
   projectRoles,
   projectFromDB,
 }: {
-  projectRoles: ProjectRole[];
+  projectRoles: any;
   projectFromDB: Project;
 }) {
   const roles = projectRoles.map((role) => ({
