@@ -81,7 +81,7 @@ export function HeaderComponent() {
                   Project
                 </Link>
                 <Link
-                  href="/users"
+                  href="/otbUsers"
                   className={`${montserrat.className} text-gray-500 hover:text-gray-900`}
                 >
                   OTB User

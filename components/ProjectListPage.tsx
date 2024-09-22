@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { ProjectCard } from './project/ProjectCard'
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -131,88 +132,8 @@ export function Page({
         </Card>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredProjects.map((project) => (
-            <Card
-              key={project.id}
-              className="hover:shadow-lg transition-shadow duration-300 bg-white"
-            >
-              <CardHeader>
-                <CardTitle className="text-xl font-semibold text-gray-800">
-                  {project.title}
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="flex flex-col gap-2">
-                <div className="text-sm text-gray-600 mb-2">
-                  エリア:
-                  <div className="flex flex-wrap gap-2">
-                    {project.areas.map((area) => (
-                      <span
-                        key={area}
-                        className="bg-purple-100 text-purple-800 text-xs font-semibold px-2.5 py-0.5 rounded"
-                      >
-                        {area}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-                <div className="text-sm text-gray-600 mb-2">
-                  職種:
-                  <div className="flex flex-wrap gap-2">
-                    {projectIdRolesMap[project.id]?.map((category, index) => (
-                      <span
-                        key={`${category.roleName}_${index}`}
-                        className="bg-purple-100 text-purple-800 text-xs font-semibold px-2.5 py-0.5 rounded"
-                      >
-                        {category.roleName}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-                <div className="text-sm text-gray-600 mb-2">
-                  スキル:
-                  <div className="flex flex-wrap gap-2">
-                    {project.skills.map((skill) => (
-                      <span
-                        key={skill}
-                        className="bg-purple-100 text-purple-800 text-xs font-semibold px-2.5 py-0.5 rounded"
-                      >
-                        {skill}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-                <div className="text-sm text-gray-600 mb-2">
-                  <div className="flex flex-wrap gap-2">
-                    募集人数:{' '}
-                    {projectIdRolesMap[project.id]?.reduce(
-                      (prev, cur, index) => {
-                        return index == 0 ? cur.total : prev + cur.total;
-                      },
-                      0,
-                    )}
-                  </div>
-                </div>
-                <div className="flex flex-row gap-2 items-center">
-                  {/* ユーザー名と日付 */}
-                  <div className="flex flex-col gap-1 w-[50%]">
-                    <div className="flex items-center text-sm text-gray-500">
-                      <User className="w-4 h-4 mr-1 text-purple-600" />
-                      {project.owner_name}
-                    </div>
-                    <div className="flex items-center text-sm text-gray-500">
-                      <Calendar className="w-4 h-4 mr-1 text-purple-600" />
-                      {project.createdAt.toLocaleDateString()}
-                    </div>
-                  </div>
-                  <Button
-                    className="w-[50%] py-5 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white"
-                    onClick={() => router.push(`/project/${project.id}`)}
-                  >
-                    詳細を見る
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
+          {filteredProjects.map(project => (
+            <ProjectCard key={project.id} project={project} />
           ))}
         </div>
       </div>
