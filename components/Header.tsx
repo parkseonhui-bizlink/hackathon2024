@@ -31,10 +31,22 @@ export function HeaderComponent() {
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    // Here you would implement actual authentication logic
-    console.log('Login attempt', { username });
-    setIsLoggedIn(true);
-    setShowLoginModal(false);
+    fetch(`/api/login/${username}`)
+      .then((response) => {
+        response.json().then((data) => {
+          if (data.status === 'ok') {
+            // Here you would implement actual authentication logic
+            console.log('Login attempt', { username });
+            setIsLoggedIn(true);
+            setShowLoginModal(false);
+          } else {
+            alert('ログインに失敗しました');
+          }
+        });
+      })
+      .catch((error) => {
+        console.error(JSON.stringify(error, null, 4));
+      });
   };
 
   const handleLogout = () => {
