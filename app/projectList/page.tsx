@@ -5,7 +5,6 @@ import { getAllProjectRoles } from '@/lib/prisma/projectRole/query';
 export default async function ProjectList() {
   const projects = await getAllProjects();
   const projectRoles = await getAllProjectRoles();
-  console.log(projects);
   return (
     <div>
       <Page projects={projects} allProjectRoles={projectRoles} />

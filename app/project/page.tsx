@@ -1,3 +1,6 @@
+import { redirect } from 'next/navigation';
+
+// projectにリダイレクトさせる
 export default function Project() {
-  return <main>Project</main>;
+  return redirect('/projectList');
 }
