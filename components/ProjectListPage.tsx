@@ -30,6 +30,13 @@ export function Page({
     }
     projectIdRolesMap[projectRole.projectId].push(projectRole);
   });
+
+  // カテゴリーをプロジェクトに追加
+  const projectsWithCategories = projects.map((project) => ({
+    ...project,
+    categories: projectIdRolesMap[project.id]?.map(role => role.roleName) || [], // 修正箇所
+  }));
+
   const [searchTerm, setSearchTerm] = useState('');
   const [roleFilter, setRoleFilter] = useState('all');
   const [areaFilter, setAreaFilter] = useState('all');
@@ -52,7 +59,7 @@ export function Page({
     setAvailableRoles([...availableRoles]);
   }, [areaFilter, projects, allProjectRoles]);
 
-  const filteredProjects = projects.filter((project) => {
+  const filteredProjects = projectsWithCategories.filter((project: any) => {
     // タイトルまたはスキルでの検索
     const matchesSearch =
       project.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
