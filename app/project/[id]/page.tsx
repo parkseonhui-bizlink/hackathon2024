@@ -8,7 +8,11 @@ export default async function Project({ params }: { params: { id: string } }) {
 
   return (
     <div>
-      <Page projectRoles={projectRoles} projectFromDB={project} />
+      <Page
+        projectRoles={projectRoles}
+        projectFromDB={project}
+        userInProjectRole={[]}
+      />
     </div>
   );
 }
